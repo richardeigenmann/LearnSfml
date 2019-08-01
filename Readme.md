@@ -35,8 +35,8 @@ see: (https://medium.com/@SaravSun/running-gui-applications-inside-docker-contai
 and (http://somatorio.org/en/post/running-gui-apps-with-docker/)
 
 ```bash
-docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --device /dev/dri --device /dev/snd --device /dev/input --rm opensuse/leap 
-docker run -it --net=host --env="DISPLAY" -v /tmp/.X11-unix:/tmp/.X11-unix --device /dev/dri --device /dev/snd --device /dev/input --rm opensuse/leap
+xhost +  # allow other computers to use your DISPLAY
+docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume /tmp/.X11-unix:/tmp/.X11-unix --volume /etc/localtime:/etc/localtime --device /dev/dri --device /dev/snd --device /dev/input --rm opensuse/leap
 
 # on a different terminal find the container it
 docker ps
@@ -44,6 +44,12 @@ docker ps
 docker cp ..whereever/LearnSfml/build/LearnSfml-1.x86_64.rpm <<container>>:/
 # in the docker container:
 zypper in LearnSfml-1.x86_64.rpm
+zypper in Mesa
+
+# On my Desktop
+zypper addrepo --refresh https://download.nvidia.com/opensuse/tumbleweed NVIDIA
+zypper in x11-video-nvidiaG05
+# libOSMesa8
 ```
 
 ##Copyright information:

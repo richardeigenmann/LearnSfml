@@ -34,7 +34,11 @@ float speed = 5.0;
 int main()
 {
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(600, 395), "SFML Welcome to Davos window");
+    std::cout << "Creating the SFML window\n";
+    auto VideoMode = sf::VideoMode(600, 395);
+    std::cout << "VideoMode Created\n";
+    sf::RenderWindow window(VideoMode, "SFML Welcome to Davos window");
+    std::cout << "Window created\n";
     window.setFramerateLimit(60);
     
     // Load a sprite to display
