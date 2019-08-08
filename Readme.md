@@ -36,7 +36,7 @@ and (http://somatorio.org/en/post/running-gui-apps-with-docker/)
 
 ```bash
 xhost +  # allow other computers to use your DISPLAY
-docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume /tmp/.X11-unix:/tmp/.X11-unix --volume /etc/localtime:/etc/localtime --device /dev/dri --device /dev/snd --device /dev/input --rm opensuse/leap
+docker run -it --gpu --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume /tmp/.X11-unix:/tmp/.X11-unix --volume /etc/localtime:/etc/localtime --device /dev/dri --device /dev/snd --device /dev/input --rm opensuse/leap
 
 # on a different terminal find the container it
 docker ps
@@ -50,6 +50,20 @@ zypper in Mesa
 zypper addrepo --refresh https://download.nvidia.com/opensuse/tumbleweed NVIDIA
 zypper in x11-video-nvidiaG05
 # libOSMesa8
+```
+
+## Experimental: Running with Flatpak
+
+```bash
+cd build
+git submodule add -f https://github.com/flathub/shared-modules.git
+flatpak-builder build-dir --force-clean org.richinet.LearnSfml.json
+flatpak-builder --run build-dir org.richinet.LearnSfml.json LearnSfml
+flatpak-builder --repo=repo --force-clean build-dir org.richinet.LearnSfml.json
+flatpak --user remote-add --no-gpg-verify --if-not-exists tutorial-repo repo
+flatpak --user install tutorial-repo org.richinet.LearnSfml
+flatpak run org.richinet.LearnSfml
+flatpak remove org.richinet.LearnSfml
 ```
 
 ##Copyright information:
