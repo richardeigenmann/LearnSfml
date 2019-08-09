@@ -6,7 +6,7 @@
 
 ## Description
 
-This short program creates a Window, loads a jpg image and displays it while playing a sound file. It was created as a starter project for SFML experiments.
+This short program creates a Window, loads a jpg image and displays it while playing a sound file. The user can move the text with the cursor keys. It was created as a starter project for SFML experiments.
 
 Successful Experiments include:
 
