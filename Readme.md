@@ -1,7 +1,5 @@
 # SFML Hello World example
 
-From: http://www.sfml-dev.org/documentation/2.5.1/
-
 ## Screenshot
 
 ![Screenshot](http://richardeigenmann.github.io/LearnSfml/LearnSfml.png)
