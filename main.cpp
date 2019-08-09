@@ -2,12 +2,12 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <map>
+
+bool verboseMode {false};
 
 class Text {
 public:
-    Text (const sf::Font & font) : myText( sf::Text("Welcome to Davos", font, 60)) {
-    }
+    Text (const sf::Font & font) : myText( sf::Text("Welcome to Davos", font, 60)) {}
 
     void setPosition (const sf::Vector2f & newPos) {
         myText.setPosition(newPos);
@@ -20,20 +20,26 @@ public:
     void draw (sf::RenderWindow & window ) {
         window.draw(myText);
     }
+
     auto getSfmlObject() {
         return myText;
     }
+
 private:
     sf::Text myText;
 };
 
-sf::Vector2i textPosition {30, -5};
-auto key_states = std::map<sf::Keyboard::Key, bool>{};
-sf::Vector2i direction {0,0};
-float speed = 5.0;
-bool verboseMode {false};
 
-void PrintHelp() {
+class MagicNumbers {
+public:
+    sf::Vector2i textPosition {30, -5};
+    sf::Vector2i direction {0,0};
+    float speed = 5.0;
+};
+
+
+
+void printHelp() {
     std::cout <<
         "-v or --verbose: Verbose output\n"
         "-h or --help:    Show help\n";
@@ -41,7 +47,7 @@ void PrintHelp() {
 }
 
 // from https://gist.github.com/ashwin/d88184923c7161d368a9
-void ProcessArgs(int argc, char** argv) {
+void processArgs(int argc, char** argv) {
     const char* const short_opts = "hv";
     const option long_opts[] = {
             {"help", no_argument, nullptr, 'h'},
@@ -64,17 +70,65 @@ void ProcessArgs(int argc, char** argv) {
         case 'h': // -h or --help
         case '?': // Unrecognized option
         default:
-            PrintHelp();
+            printHelp();
             break;
         }
     }
 }
 
 
+void handleKeyPressed(const sf::Keyboard::Key & keyCode, MagicNumbers & magicNumbers) {
+    if (verboseMode) std::cout << "Handling a sf::Event::KeyPressed event. Key code; "<< keyCode << "\n";
+    switch (keyCode) {
+        case sf::Keyboard::Left:
+            if (verboseMode) std::cout << "KeyPressed Event detected: Left: " << keyCode << std::endl;
+            magicNumbers.direction.x = -1;
+            break;
+        case sf::Keyboard::Right:
+            if (verboseMode) std::cout << "KeyPressed Event detected: Right: " << keyCode << std::endl;
+            magicNumbers.direction.x = 1;
+            break;
+        case sf::Keyboard::Up:
+            if (verboseMode) std::cout << "KeyPressed Event detected: Up: " << keyCode << std::endl;
+            magicNumbers.direction.y = -1;
+            break;
+        case sf::Keyboard::Down:
+            if (verboseMode) std::cout << "KeyPressed Event detected: Down: " << keyCode << std::endl;
+            magicNumbers.direction.y = 1;
+            break;
+        default:
+            break;
+    }
+}
+
+void handleKeyReleased(const sf::Keyboard::Key & keyCode, MagicNumbers & magicNumbers) {
+    if (verboseMode) std::cout << "Handling a sf::Event::KeyReleased event. Key code; "<< keyCode << "\n";
+    switch (keyCode) {
+        case sf::Keyboard::Left:
+            if (verboseMode) std::cout << "KeyReleased Event detected: Left: " << keyCode << std::endl;
+            magicNumbers.direction.x = 0;
+            break;
+        case sf::Keyboard::Right:
+            if (verboseMode) std::cout << "KeyReleased Event detected: Right: " << keyCode << std::endl;
+            magicNumbers.direction.x = 0;
+            break;
+        case sf::Keyboard::Up:
+            if (verboseMode) std::cout << "KeyReleased Event detected: Up: " << keyCode << std::endl;
+            magicNumbers.direction.y = 0;
+            break;
+        case sf::Keyboard::Down:
+            if (verboseMode) std::cout << "KeyReleased Event detected: Down: " << keyCode << std::endl;
+            magicNumbers.direction.y = 0;
+            break;
+        default:
+            break;
+    }       
+}
 
 int main(int argc, char* argv[]) {
+    processArgs(argc, argv);
 
-    ProcessArgs(argc, argv);
+    MagicNumbers magicNumbers{};
 
     if (verboseMode) std::cout << "Creating the SFML window\n";
     auto VideoMode = sf::VideoMode(600, 395);
@@ -95,10 +149,10 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
 
     Text text{font};
-    text.setPosition(sf::Vector2f{textPosition});
+    text.setPosition(sf::Vector2f{magicNumbers.textPosition});
 
-    sf::Music music;
     if (verboseMode) std::cout << "Loading the music file sound.ogg\n";
+    sf::Music music;
     if (!music.openFromFile("sound.ogg"))
         return EXIT_FAILURE;
 
@@ -117,76 +171,25 @@ int main(int argc, char* argv[]) {
                     break;
 
                 case sf::Event::KeyPressed:
-                    if (verboseMode) std::cout << "Handling a sf::Event::KeyPressed event. Key code; "<< event.key.code << "\n";
-                    switch (event.key.code) {
-                        case sf::Keyboard::Escape:
-                            std::cout << "KeyPressed Event detected: Escape: " << event.key.code << std::endl;
-                            break;
-                        case sf::Keyboard::Left:
-                            std::cout << "KeyPressed Event detected: Left: " << event.key.code << std::endl;
-                            direction.x = -1;
-                            break;
-                        case sf::Keyboard::Right:
-                            std::cout << "KeyPressed Event detected: Right: " << event.key.code << std::endl;
-                            direction.x = 1;
-                            break;
-                      case sf::Keyboard::Up:
-                            std::cout << "KeyPressed Event detected: Up: " << event.key.code << std::endl;
-                            direction.y = -1;
-                            break;
-                        case sf::Keyboard::Down:
-                            std::cout << "KeyPressed Event detected: Down: " << event.key.code << std::endl;
-                            direction.y = 1;
-                            break;
-                        default:
-                            break;
-                    }
+                    handleKeyPressed(event.key.code, magicNumbers);
                     break;
                 case sf::Event::KeyReleased:
-                    switch (event.key.code) {
-                        case sf::Keyboard::Escape:
-                            std::cout << "KeyReleased Event detected: Escape: " << event.key.code << std::endl;
-                            break;
-                        case sf::Keyboard::Left:
-                            std::cout << "KeyReleased Event detected: Left: " << event.key.code << std::endl;
-                            direction.x = 0;
-                            break;
-                        case sf::Keyboard::Right:
-                            std::cout << "KeyReleased Event detected: Right: " << event.key.code << std::endl;
-                            direction.x = 0;
-                            break;
-                      case sf::Keyboard::Up:
-                            std::cout << "KeyReleased Event detected: Up: " << event.key.code << std::endl;
-                            direction.y = 0;
-                            break;
-                        case sf::Keyboard::Down:
-                            std::cout << "KeyReleased Event detected: Down: " << event.key.code << std::endl;
-                            direction.y = 0;
-                            break;
-                        default:
-                            break;
-                    }       
+                    handleKeyReleased(event.key.code, magicNumbers);
                     break;
 
-                // we don't process other types of events
                 default:
                     break;
             }
         }
 
-        // Clear screen
         window.clear();
 
-        // Draw the sprite
         window.draw(sprite);
 
-        // Draw the string
-        sf::Vector2f newPosition = text.getPosition() + (sf::Vector2f{direction} * speed);
+        sf::Vector2f newPosition = text.getPosition() + (sf::Vector2f{magicNumbers.direction} * magicNumbers.speed);
         text.setPosition(newPosition);
         text.draw(window);
-        //window.draw(text.getSfmlObject());
 
-        // Update the window
         window.display();
     }
     return EXIT_SUCCESS;

@@ -3,10 +3,6 @@ PROJECT(LearnSfml)
 
 SET(CMAKE_CXX_STANDARD 17)
 
-IF (UNIX)
-    #SET(CMAKE_MODULE_PATH "/usr/share/SFML/cmake/Modules/" "${PROJECT_SOURCE_DIR}" "${CMAKE_MODULE_PATH}")
-ENDIF (UNIX)
-
 FIND_PACKAGE(SFML 2.5 COMPONENTS graphics window system audio REQUIRED)
 MESSAGE(STATUS "SFML_INCLUDE_DIR: ${SFML_INCLUDE_DIR}")
 
@@ -24,13 +20,6 @@ SET(LearnSfmlSources
 )
 
 ADD_EXECUTABLE(LearnSfml ${LearnSfmlSources})
-
-TARGET_INCLUDE_DIRECTORIES(LearnSfml PUBLIC
-    ${SFML_INCLUDE_DIR}
-)
-
-## If you want to link SFML statically
-# set(SFML_STATIC_LIBRARIES TRUE)
 
 TARGET_LINK_LIBRARIES(LearnSfml LINK_PUBLIC
     sfml-graphics sfml-audio sfml-window sfml-system

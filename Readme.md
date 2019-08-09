@@ -21,7 +21,7 @@ make
 ./LearnSfml
 ```
 
-## CPACK packaging to create rpm etc.
+## CPACK packaging to create .rpm and .deb
 
 ```bash
 cd build
@@ -45,11 +45,6 @@ docker cp ..whereever/LearnSfml/build/LearnSfml-1.x86_64.rpm <<container>>:/
 # in the docker container:
 zypper in LearnSfml-1.x86_64.rpm
 zypper in Mesa
-
-# On my Desktop
-zypper addrepo --refresh https://download.nvidia.com/opensuse/tumbleweed NVIDIA
-zypper in x11-video-nvidiaG05
-# libOSMesa8
 ```
 
 ## Experimental: Running with Flatpak
