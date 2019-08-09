@@ -3,16 +3,24 @@
 From: http://www.sfml-dev.org/documentation/2.5.1/
 
 ## Screenshot
-![Screenshot](http://opentechschool-zurich.github.io/cpp-co-learning/topics/graphics/richard/SfmlHelloWorld/SfmlHelloWorld.png)
 
-## Description:
-This short program creates a Window, loads a jpg image and displays it.
+![Screenshot](http://richardeigenmann.github.io/LearnSfml/LearnSfml.png)
 
-It loads a font and uses it to render a text.
+## Description
 
-It loads a ogg sound file and plays the sound in a loop.
+This short program creates a Window, loads a jpg image and displays it while playing a sound file. It was created as a starter project for SFML experiments.
+
+Successful Experiments include:
+
+* Using cmake as a build system with C++ 17
+* Creating a .rpm package for openSUSE using CPACK
+* Creating a .deb package for Debian using CPACK
+* Testing the .rpm and .deb packages on a Docker  container running openSUSE or Debian
+* Creating and running a Flatpak
+* Including getopt to turn on verboseness with -v
 
 ## Build and run
+
 ```bash
 mkdir build
 cd build
@@ -28,6 +36,8 @@ cd build
 make package
 make package_source
 ```
+
+The packages are to be found in the build subdirectory.
 
 ## Testing the package on a openSUSE leap Docker container
 
@@ -47,10 +57,9 @@ zypper in LearnSfml-1.x86_64.rpm
 zypper in Mesa
 ```
 
-## Experimental: Running with Flatpak
+## Compiling and running with Flatpak
 
 ```bash
-cd build
 git submodule add -f https://github.com/flathub/shared-modules.git
 flatpak-builder build-dir --force-clean org.richinet.LearnSfml.json
 flatpak-builder --run build-dir org.richinet.LearnSfml.json LearnSfml
@@ -61,13 +70,15 @@ flatpak run org.richinet.LearnSfml
 flatpak remove org.richinet.LearnSfml
 ```
 
-##Copyright information:
+## Copyright information
+
 Picture of Davos, taken by Richard Eigenmann in December 2016, is hereby contributed to the public domain
 
 The sound file comes from https://www.freesound.org/people/club%20sound/sounds/107330/
 It is licensed under the creative commons attribution- Non Commercial license.
 See here: https://creativecommons.org/licenses/by-nc/3.0/
-The sound was created by a user called "club sound": https://www.freesound.org/people/club%20sound/
+
+The sound was created by a user called "club sound" or nowadays "chimerical": https://freesound.org/search/?q=Countdown+News+Intro It is licenced under the Creative Commons Attribution Non-Commerical licence
 
 The Font was taken from http://www.1001freefonts.com/changa_one.font
 It is in the public domain and licenced under OFL and GPL

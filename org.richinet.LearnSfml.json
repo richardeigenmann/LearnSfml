@@ -1,0 +1,47 @@
+{
+    "app-id": "org.richinet.LearnSfml",
+    "runtime": "org.freedesktop.Platform",
+    "runtime-version": "18.08",
+    "sdk": "org.freedesktop.Sdk",
+    "command": "FlatpakLaunchLearnSfml.sh",
+    "modules": [
+        "shared-modules/udev/udev-175.json",
+        {
+           "name": "foo"
+        }, {
+	        "name": "sfml",
+            "cleanup": [ "/bin" ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/SFML/SFML.git"
+                }
+            ],
+	        "buildsystem": "cmake",
+	        "cleanup": [
+		        "/include"
+            ]
+        }, {
+            "name": "LearnSfml",
+            "buildsystem": "cmake",
+            "build-commands": [
+                "install -D FlatpakLaunchLearnSfml.sh /app/bin/FlatpakLaunchLearnSfml.sh",
+                "install -D LearnSfml /app/bin/LearnSfml",
+                "install -D Davos.jpg /app/bin/Davos.jpg",
+                "install -D ChangaOne-Regular.ttf /app/bin/ChangaOne-Regular.ttf ",
+                "install -D sound.ogg /app/bin/sound.ogg"
+            ],
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "."
+                }
+            ]
+        }
+    ],
+    "finish-args": [
+  	 "--socket=x11",
+	 "--device=dri",
+	 "--socket=pulseaudio"
+    ]
+}
