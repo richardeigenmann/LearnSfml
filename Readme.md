@@ -50,9 +50,33 @@ docker run -it --gpu --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/roo
 docker ps
 # copy the package to the docker container
 docker cp ..whereever/LearnSfml/build/LearnSfml-1.x86_64.rpm <<container>>:/
+
 # in the docker container:
 zypper in LearnSfml-1.x86_64.rpm
 zypper in Mesa
+
+LearnSfml
+```
+
+## Testing the package on a Debian Docker container
+
+```bash
+xhost + # allow other computers to use your DISPLAY
+docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume /tmp/.X11-unix:/tmp/.X11-unix --volume /etc/localtime:/etc/localtime --device /dev/dri --device /dev/snd --device /dev/input --rm debian:latest
+
+apt-get update
+apt-cache search x11-apps
+apt-get install x11-apps
+
+# on a different terminal find the container it
+docker ps
+# copy the package to the docker container
+docker cp ..whereever/LearnSfml/build/LearnSfml-1.x86_64.deb c4844955c251:/
+# in the docker container:
+apt-get update
+apt-get install ./LearnSfml-1.x86_64.deb
+
+LearnSfml
 ```
 
 ## Compiling and running with Flatpak
@@ -72,11 +96,7 @@ flatpak remove org.richinet.LearnSfml
 
 Picture of Davos, taken by Richard Eigenmann in December 2016, is hereby contributed to the public domain
 
-The sound file comes from https://www.freesound.org/people/club%20sound/sounds/107330/
-It is licensed under the creative commons attribution- Non Commercial license.
-See here: https://creativecommons.org/licenses/by-nc/3.0/
-
-The sound was created by a user called "club sound" or nowadays "chimerical": https://freesound.org/search/?q=Countdown+News+Intro It is licenced under the Creative Commons Attribution Non-Commerical licence
+The sound was created by a user called "club sound" or nowadays "chimerical": https://freesound.org/search/?q=Countdown+News+Intro It is licenced under the Creative Commons Attribution Non-Commerical licence https://creativecommons.org/licenses/by-nc/3.0/
 
 The Font was taken from http://www.1001freefonts.com/changa_one.font
 It is in the public domain and licenced under OFL and GPL
