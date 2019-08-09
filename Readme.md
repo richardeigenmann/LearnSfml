@@ -71,7 +71,8 @@ apt-get install x11-apps
 # on a different terminal find the container it
 docker ps
 # copy the package to the docker container
-docker cp ..whereever/LearnSfml/build/LearnSfml-1.x86_64.deb c4844955c251:/
+docker cp ..whereever/LearnSfml/build/LearnSfml-1.x86_64.deb <<container>>/
+
 # in the docker container:
 apt-get update
 apt-get install ./LearnSfml-1.x86_64.deb
